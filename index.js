@@ -66,18 +66,41 @@ function toSnow () {
   snow.style.top = '0px'
   body.appendChild(snow)
   snowCount += 1
-  setTimeout(() => {
-    snow.style.top = `${window.innerHeight - 15}px`
-  }, 100)
-  setTimeout(() => {
+  snow.snowEvent = setInterval(overlapCharacter, 500, snow)
+}
+
+function overlapCharacter (snow) {
+  const body = document.body
+  const top = getPxNumber(snow.style.top)
+  if (top < window.innerHeight - 15) {
+    snow.style.top = `${top + 10}px`
+    const character = document.getElementById('character')
+    const characterTop = getPxNumber(character.style.top)
+    const characterLeft = getPxNumber(character.style.left)
+    const snowTop = getPxNumber(snow.style.top)
+    const snowLeft = getPxNumber(snow.style.left)
+    const equal1 = snowTop <= characterTop || (snowTop + 15) <= characterTop
+    const equal2 = snowTop >= characterTop + CHARACTER_SIZE || (snowTop + 15) <= characterTop + CHARACTER_SIZE
+    if (equal1 && equal2) {
+      // alert('end!')
+      console.log(snow.id);
+      clearInterval(snow.snowEvent)
+    }
+  } else {
     body.removeChild(snow)
-  }, 10000)
+  }
 }
 
 (function () {
   characterPositionSet()
   characterMoveEventSet()
-  setInterval(() => {
+  // setInterval(() => {
+  toSnow()
+  setTimeout(() => {
     toSnow()
-  }, 100)
+    setTimeout(() => {
+      toSnow()
+    }, 3000)
+  }, 3000)
+  // }, 100)
 })()
