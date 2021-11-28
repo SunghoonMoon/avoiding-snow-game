@@ -76,12 +76,10 @@ function overlapCharacter (snow) {
     snow.style.top = `${top + 10}px`
     const character = document.getElementById('character')
     const characterTop = getPxNumber(character.style.top)
-    const characterLeft = getPxNumber(character.style.left)
+    const characterLeft = getPxNumber(character.style.left) + CHARACTER_SIZE
     const snowTop = getPxNumber(snow.style.top)
     const snowLeft = getPxNumber(snow.style.left)
-    const equal1 = snowTop <= characterTop || (snowTop + 15) <= characterTop
-    const equal2 = snowTop >= characterTop + CHARACTER_SIZE || (snowTop + 15) <= characterTop + CHARACTER_SIZE
-    if (equal1 && equal2) {
+    if (characterTop <= snowTop && characterTop + CHARACTER_SIZE >= snowTop) {
       // alert('end!')
       console.log(snow.id);
       clearInterval(snow.snowEvent)
@@ -96,11 +94,5 @@ function overlapCharacter (snow) {
   characterMoveEventSet()
   // setInterval(() => {
   toSnow()
-  setTimeout(() => {
-    toSnow()
-    setTimeout(() => {
-      toSnow()
-    }, 3000)
-  }, 3000)
   // }, 100)
 })()
